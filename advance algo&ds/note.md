@@ -87,3 +87,64 @@ Not fit in some time critical process, since the worst case does exist.
 
 ## de-Amortized
 Use physical inplementation inspired by prepaid argument to reduce expensive operation consuming by add some extra operation in cheap operation.
+
+# Quake Heap
+## tournament tree
+* binary tree
+* elements in leaves
+* denoted all leaves in the same depth
+* parent holds the smallest priority of its children
+
+### operation
+* link: $O(1)$ : add a new node with the lower priority of two **same height** tournament trees' root
+* split: $O(1)$: cut the children with higher priority of root
+
+## consistent
+* a forest of tournament trees which partition the whole data set
+* use pointer to denotes priority of nodes 
+    * true data will has a pointer to the highest node of its priority 
+    * all data with same priority has a pointer to true data
+    * we can modify a set of nodes with same priority by changing true data ($O(1)$ operation)
+* node of every height invariant
+    * for $\alpha \in [0.5,1]$, $n_{i-1} \leq \alpha n_i$
+    * when this property be violate, cut all nodes above (included) the lowest violated height
+    * lemma 1: nodes bounded by $O(n)$
+    * theorem 1: the space consumption is bounded by $O(n)$
+    * lemma 2: height is bounded by $O(log(n))$ <= $\alpha ^ {h_{max}}n\geq n_{height} \geq 1$
+
+## potential function
+$$\phi(S_i) = N + 3T+\frac{3}{2\alpha-1}B$$
+$$\Delta \phi(S_i) = \Delta N + 3\Delta T+\frac{3}{2\alpha-1}\Delta B$$
+## operation
+### Insertion
+form a new tournamet tree (with one elements) and add it to the forest
+* actual cost $O(1)$
+* $\Delta \phi$: $1+3*1+0$
+### Decrease key
+cut the highest node that true data points to from its parent (if exist), then decrease key
+* acutal cost $O(1)$
+* $\Delta \phi$: $0+3*1+\frac{3}{2\alpha-1}$
+### Delete min
+denotes: $\mathcal{L}$ as 
+1. find the smallest priority root in forest
+    * actual cost: $T^{(0)}$, the number of trees in forest
+2. delete all nodes with smallest priority
+    * acutal cost: $\mathcal{L}$, the number of nodes to remove
+3. while existing 2 trees with same height, link them
+    * actual cost: $\leq (T^{(0)} + \mathcal{L} - 1) - 1$, in the worst case, we have $(T^{(0)} + \mathcal{L} - 1)$ trees before link, 1 tree after link
+4. cut all heights that violate invariant
+    * actual cost: $\sum_{h'>h} n_{h'}$, where $h$ is the highest height without violate invariant
+5. return smallest priority
+
+* total actual cost: $2(T^{(0)} + \mathcal{L} - 1) + \sum_{h'>h} n_{h'}$
+* steps 1-3  
+    * $\Delta T = T^{(1)} - T^{(0)}$, where $T^{(1)}$ is the # of trees in forest after link.
+    * $\Delta N \leq T^{(0)} - T^{(1)}$, since each cut of nodes will be conpensate if it cause a link, so the $-\Delta T$ bounds $\Delta N$
+    * $\Delta B \leq 0$, since bad nodes only being cut in this procedure
+
+* step 4
+    * $\Delta T \leq n_h^{(0)}$, since the height $h$ will be the root of trees after maintain invariant
+    * $\Delta N = -\sum_{h'>h} n_{h'}$
+    * $\Delta B \leq -b^{(0)}_{h+1} \lt -(2\alpha-1)n_h^{(0)}$, since the $h+1$ nodes violate invariant, $b^{(0)}_{h+1} \geq 2n_{h+1} - n_{h} = (2\alpha -1) n_{h}$ (this derive from the relation of h-th height nodes and the root, bad/good nodes from h+1-th height nodes $n_h \geq \underbrace{0}_{root} + \underbrace{2(n_{h+1} - b_{h+1})}_{good\ nodes} + \underbrace{b_{h+1}}_{bad\ nodes}$)
+
+* amortized cost = $2(T^{(0)} + \mathcal{L} - 1) + \sum_{h'>h} n_{h'} + 3(T^{(1)} - T^{(0)}) + T^{(0)} - T^{(1)} + 0 + 3n_h^{(0)} + -\sum_{h'>h} n_{h'} -\frac{3}{2\alpha-1}(2\alpha-1)n_h^{(0)} = 2(T^{(1)}+\mathcal{L} - 1) \leq 2(3h_{max})  \in O(log(n))$ 

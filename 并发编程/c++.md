@@ -10,7 +10,9 @@ handler 可以是函数,可以是lambda表达式,可以是仿函数(见[仿函�
     t1.join()
     
 # 不join线程崩溃
-因为线程内部的terminate,里面有assert断言会导致崩溃
+因为线程内部的terminate,里面有assert断言会导致崩溃.
+
+在thread的移动构造中进行了判断,如果本线程是joinable的(即所有权仍被持有),就会抛出异常
 
 # handler是仿函数的情形
 join会崩溃,因为handler会把仿函数解释为函数指针,可以通过以下方式解决
@@ -127,6 +129,8 @@ join会崩溃,因为handler会把仿函数解释为函数指针,可以通过以�
 ## std::future<T>
 一个泛型类型,用于获取异步函数的返回值.
 
+**future类型在析构时会等待对应任务的完成,需要当心此处生成死锁**(如和lock_guard一起使用时,如果lock_guard早于future构造,则在析构时要求后析构lock_guard(即后释放锁),但如果future中需要持有锁,future需要等待lock_guard析构,但future需要先析构才能使lock_guard析构,此时产生循环等待)
+
     // 阻塞获取结果
     // wait 不会直接获得结果,但其返回时,代表结果已经可用,且该操作不消耗future
     futureRes.wait();
@@ -171,3 +175,47 @@ promise是一个封装对象,是连接异步生产者消费者的桥梁. 它不�
 
 ### 异常
 在promise中可以设置异常,主线程需要捕获该异常防止崩溃
+
+# 原子类型
+    atmoic<>
+    // c++17 是否硬件上支持无锁形式
+    std::atomic::is_always_lock_free
+## 内存模型
+* 全局一致
+    * std::memory_order_seq_cst
+    * 如同加了锁
+    * 写操作会同步的到内存从而同步到其他CPU
+* 同步模型(不能保证全局顺序一致)
+    * std::memory_order_acquire
+    * std::memory_order_release
+    * memory_order_acq_rel
+* 宽松顺序
+    * std::memory_order_relaxed
+    * 保证操作原子性
+    * 影响不一定立刻可见
+    * 不能保证修改顺序
+## 内存序列
+
+# 无锁并发
+## 无锁队列
+使用compare_exchange来获取编辑位置
+* std::atomic<T>::compare_exchange_weak(T &exp, T desired)
+* std::atomic<T>::compare_exchange_strong(T &exp, T desired)
+
+### 并发思考点
+* 当两个数据同时写入时,如果先对目标写入再对尾指针进行更新,会导致后修改的数据覆盖先修改的数据,然后先修改的数据先成功修改尾指针退出,从而导致先写数据丢失
+    * 先竞争写入位置,竞争到后再对目标位置写入
+* 空队列写入后直接读取时,由于先(竞争并)修改了写入位置,再写入,可能导致其他线程读取时发现存在数据(尾指针变动)但读出旧数据(写入未完成)
+    * 引入update原子量来保证读取到写入后的数据
+* 单个update原子量可能导致后续写入被前序block的问题?
+
+
+# 并行设计模式
+## Actor
+点对点发送msg
+
+## CSP
+像队列中投递和从队列中取出,发送者和接收者不关心对方是谁
+
+# 返回值
+* 如果有移动构造优先返回移动构造
