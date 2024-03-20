@@ -8,13 +8,17 @@
 * width/height
 * channel
     * channel size of this layer based on filter number, rather than the channel size of previous channel
+
 ### why
 * parameter sharing
 * sparcity of connection 
+
 => robust to translation invariance
+
 => robust to overfitting => need less training data
 ### Goal
 extract lines in the pictures
+
 the cell can be trained as parameter of deep learning
 
 ### 1*1 Convolution
@@ -26,12 +30,15 @@ shrink the size of parameter
 * stride
 * width/height
 * channel
+
 ### Pooling Method
 * Max
 * Avg
 * Min
+
 ### Goal
 extract local feature (or concentrate)
+
 no parameter to learn
 
 ## Fully Connected
@@ -75,6 +82,7 @@ output multiple $Position$ information
 ### Usage
 * face detection
 * pose detection 
+
 ## Sliding Windows
 convolution will naturally acheive sliding windows
 
