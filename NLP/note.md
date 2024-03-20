@@ -191,6 +191,8 @@ for information extraction
 * unigram Tagger
     * assign most common tag to each word type
     * model is a look-up table
+* n-gram Tagger
+    * aparse issues (use backoff)
 * classifier-based tagging
     * use a classifier to tag each features
     * error propagation: wrong prediction infect next prediction
@@ -212,4 +214,5 @@ for information extraction
 * use hapax legomena to guess
 * sub-word representations to capture morphology
 
-# Hidden Markov model
+# Deep leanrning for NLP
+

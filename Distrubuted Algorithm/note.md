@@ -102,6 +102,7 @@ to recover from termination
 * distributed network strongly connected (reachable for any pair of processes)
 * unspecific (snapshot algorithm can start at any process)
 * not freezing while snapshot running
+// TODO: what if process can handle message concurrently
 
 ### Chandy and Lamport’s Snapshot Algorithm
 #### control message (marker) handle 
@@ -123,3 +124,91 @@ assume there are $e$ edges and the diameter of network is $d$
 * use a monitor process that connects to all other processes and doesn't interfere other processes
 
 TODO: $\phi$ meaning and lattice and the procedure of Marzullo-Neiger
+
+# Coordination
+## Assumption
+* reliable channels
+* do not rely on others for communication 
+* crash and abnormally action is possible
+
+### Failure detector
+suspected failed if not receive message for T+D (D = maximum transmission delay)
+TODO: listen to lecture for his murmur
+
+### Mutal Exclusion
+* assumption
+    * only one critical section
+    * asynchronous system
+    * communication relibale 
+    * process will not failed
+* Application level Protocol
+    * enter (try to access, may block)
+    * access (critical)
+    * exit
+* Expectation
+    * safety, only one process access at a moment
+    * liveness, all access will exit in the end, and all enter will not permenant block (dead lock or starvation)
+    * ordering, first enter first access
+
+### Evaluation 
+* bandwidth consumption
+* client delays
+* throughput
+    * synchronization delay
+
+
+### Algorithm
+* Central Server Algorithm
+    * central server will queue the enter request 
+    * safety and liveness is guaranteed (due to sumption never failed)
+    * ordering is not guaranteed (due to the network delay)
+    * cons: single server failed and bottlenecks
+
+* Ring-based algorithm
+    * pass access token through a logical ring
+    * safety and liveness is guaranteed (due to sumption never failed)
+    * ordering is not guaranteed 
+    * evaluation
+        * constant bandwidth consumption
+        * entry delay 0 to N
+        * synchronization delay 1 to N TODO:
+        * waste bandwidth if no one enter
+
+* Ricart and Agrawala's algorithm
+    * use state to denotes current process
+        * initialztion/exit: 
+            * set state released
+            * reply all request in queue
+        * enter: 
+            * set state to wanted
+            * multicast request
+            * wait until get all response
+            * set state to held then access critical
+        * when receive request:
+            * if self access critical (state:held) queue the request
+            * or if self enter and waiting for reply, compare lamport time stamp, if self early then queue
+            * otherwise reply to this request
+    * all expectations are guaranteed
+    * evaluation
+        * 2(n-1) message consumed in an enter request
+        * synchronization delay: 1 message transmission time
+
+* maekawa's Voting Algorithm
+    * use a voting set model
+        * $\forall i,j, i\neq j, V_i \bigcap V_j \neq \phi$ any two voting set overlap
+        * $\forall i, p_i \in V_i$ processes are in their own set
+        * $\forall i,j, |V_i| = |V_j| =K $ fairness
+        * in optimal $K \sim N^{\frac{1}{2}}$
+    * use vote to determine access
+        * all process init to be state:released, noted:No
+        * if one want to enter, multicast request to its voting set members, and wait until all response arrive to access (state: held, voted:no)
+        * if one want to exit, multicast release to its voting set members
+        * when one process get a request:
+            * if it is accessing (state:held), queue request
+            * if it has voted for some one to access (voted:yes), queue request
+            * otherwise, response this request, and set voted:yes
+        * when one process receive a release
+            * if any request in queue, response to that request
+            * otherwise set voted:no
+    * safety is guaranteed
+    * liveness is not guaranteed due to it might cause deadlocks
