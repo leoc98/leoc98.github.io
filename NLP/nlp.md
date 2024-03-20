@@ -60,7 +60,7 @@ def: stop word, a list of word that will be remove from vocabulary
 
 # Language Models
 ## Seen probability
-$P(sentence) = \prod_{i<len(sentence)} P(w_i)$
+$$P(sentence) = \prod_{i<len(sentence)} P(w_i)$$
 ## Perplexity
 $$
 PP(sentence) = (\frac{1}{P(sentence)})^{ \frac{1}{m}}
@@ -79,7 +79,7 @@ unigram
 $$
 P(w_i) = \frac{C(w_i)}{M}
 $$
-n-gram($n>1$)
+n-gram($$n>1$$)
 $$P(w_{i-n+1}...w_{i-1}) = \frac{
 C(w_{i-n+1}...w_{i})
 }{
@@ -102,19 +102,19 @@ word\_token + word\_type \times \alpha
 * Absolute Discounting: take away fix probability from existed words to unseen words 
 * Katz Backoff: take away fix probability from existed words and redistribute to unseen words
     1. get a fix count from existed words
-    2. distribute fix count by the portion of all unseen combination (where $C(w_{i-1},w_a) = 0$)
-        * $\frac{P(this)}{\sum_{C(w_{i-1},w_a) = 0} P(w_{a})}$
-        * note that $P(w_i)$ is a backoff, which means it takes the probability of (n-1)-grams
+    2. distribute fix count by the portion of all unseen combination (where $$C(w_{i-1},w_a) = 0$$)
+        * $$\frac{P(this)}{\sum_{C(w_{i-1},w_a) = 0} P(w_{a})}$$
+        * note that $$P(w_i)$$ is a backoff, which means it takes the probability of (n-1)-grams
 * Kneser-Ney Smoothing: redistribute probability mass based on the versatility (continuation probability) of the lower order n-gram
     1. get a fix count from existed words
-    2. distribute fix count by the portion of all existed conbination prefix count (**unique count**, where $count(w^{'}_{i-1}:C(w^{'}_{i-1}, w_i)>0)$) divided all unseen combindation of their seen count (**also unique count**, where $\sum_{\underbrace{w_j:C(w_{i-1},w_{j})=0}_{all\ unseen\ combindation\ of\ w_{i-1}}} count(\underbrace{w_j:C(w_{j-1},w_{j}) > 0}_{seen\ conbination\ count\ of\ w_j})$)
+    2. distribute fix count by the portion of all existed conbination prefix count (**unique count**, where $$count(w^{'}_{i-1}:C(w^{'}_{i-1}, w_i)>0)$) divided all unseen combindation of their seen count (**also unique count**, where $\sum_{\underbrace{w_j:C(w_{i-1},w_{j})=0}_{all\ unseen\ combindation\ of\ w_{i-1}}} count(\underbrace{w_j:C(w_{j-1},w_{j}) > 0}_{seen\ conbination\ count\ of\ w_j})$$)
 ### Interpolation
 $$
 P_{IN}(w_i|w_{i-1},w_{i-2}) = \lambda_3 P_3 + \lambda_2 P_2 + \lambda_1 P_1
 $$
-where $\sum \lambda_i = 1$, 
-$P_i$ denotes i-grams probability,
-$lambda$ is learned base on held out data
+where $$\sum \lambda_i = 1$$, 
+$$P_i$$ denotes i-grams probability,
+$$lambda$$ is learned base on held out data
 
 
 # Text Classification
@@ -210,15 +210,15 @@ for information extraction
     * use a basic sequential model
     * takes into account the whole sequence (avoid error propagation) (call sequence labelling, structured prediction)
     * output independence assumption: ignored previous tags influence to current word
-        * $P(w|t) = \prod P(w_i|t_i)$
+        * $$P(w|t) = \prod P(w_i|t_i)$$
     * markov assumption: tag can only relavant to previous tag
-        * $P(t) = \prod P(t_i|t_{i-1})$
+        * $$P(t) = \prod P(t_i|t_{i-1})$$
     * unable to track all possibility
         * use viterbi algorithm
         * a dynamic programming way
-        * $P(w|t)P(t) = \prod P(w_i|t_i)*max(P(t_i|t_{i-1})*s(t_{i-1}, w_{i-1}))$
-        * where $s(t_{i-1}, w_{i-1})$ is the previous state that has been calculate (store in a table)
-        * $O(t^2n)$, where t is the tagset size, n is the lenght of sequence
+        * $$P(w|t)P(t) = \prod P(w_i|t_i)*max(P(t_i|t_{i-1})*s(t_{i-1}, w_{i-1}))$$
+        * where $$s(t_{i-1}, w_{i-1})$$ is the previous state that has been calculate (store in a table)
+        * $$O(t^2n)$$, where t is the tagset size, n is the lenght of sequence
 
 ### unkonwn words
 * use hapax legomena to guess

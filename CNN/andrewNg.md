@@ -84,7 +84,7 @@ Class
 \end{bmatrix}
 $$
 ## Landmark Detection
-output multiple $Position$ information
+output multiple $$Position$$ information
 ### Usage
 * face detection
 * pose detection 
@@ -118,8 +118,8 @@ $$
 img -> 128 dimension output
 
 ### Object function
-use $\alpha$ as a margin, $a$ as the anchor image, $p$ as a positive image and $n$ as a negative image.
+use $$\alpha$ as a margin, $a$ as the anchor image, $p$ as a positive image and $n$$ as a negative image.
 $$
  d(a,p) + \alpha \leq d(a,n)
 $$
-when choosing a,n,p to train, we prefer that $d(a,p) \approx  d(a,n)$ 
+when choosing a,n,p to train, we prefer that $$d(a,p) \approx  d(a,n)$$ 
