@@ -1,20 +1,14 @@
 # Your Book Title
 
-- Advance Algorithm DataStructure
-  * [Note](advance%20algo&ds/note.md)
-- Angular
-  * [Note](Angualr/note.md)
+- [Advance Algorithm And Data Structure](Advance Algorithm and Data Structure/Advance Algorithm and Data Structure.md)
+- [Angular](Angular/Angular.md)
 - CNN
   * [Andrew Ng](CNN/andrewNg.md)
 - Distrubuted Algorithm
-  * [Note](Distrubuted%20Algorithm/note.md)
+  * [Distributed Algorithm](Distrubuted%20Algorithm/Distributed Algorithm.md)
 - [MISC](MISC/misc.md)
-- NLP
-  * [Note](NLP/note.md)
-- Nodejs
-  * [Note](Nodejs/note.md)
-- TODOLIST
-  * [Melb Course](TODOLIST/melbCourse.md)
-  * [Todo](TODOLIST/todo.md)
+- [NLP](NLP/nlp.md)
+- [Nodejs](Nodejs/nodejs.md)
+
 - 并发编程
-  * [C](并发编程/c++.md)
+  * [Bilibili University](并发编程/bilibili%20University.md)
