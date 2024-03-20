@@ -20,11 +20,17 @@ the growth speed of operations (memory cells) compared to the growth speed of pr
 
 ## asymptotic notation
 * $Big-O$
-$$f(n) \leq c_1 \times g (n)\ holds\ for\ all\ n \geq c_2 \Rightarrow f(n) \in O(g(n))$$
+$$
+f(n) \leq c_1 \times g (n)\ holds\ for\ all\ n \geq c_2 \Rightarrow f(n) \in O(g(n))
+$$
 * $Big-\Omega$
-$$f(n) \geq c_1 \times g (n)\ holds\ for\ all\ n \geq c_2 \Rightarrow f(n) \in \Omega(g(n))$$
+$$
+f(n) \geq c_1 \times g (n)\ holds\ for\ all\ n \geq c_2 \Rightarrow f(n) \in \Omega(g(n))
+$$
 * $Big-\Theta$
-$$f(n) \in O(g(n))\ \&\&\ f(n) \in \Omega(g(n)) \Rightarrow f(n) \in \Theta(g(n))$$
+$$
+f(n) \in O(g(n))\ \&\&\ f(n) \in \Omega(g(n)) \Rightarrow f(n) \in \Theta(g(n))
+$$
 
 # Treap
 a data structure combined binary-search-Tree and min-Heap, its operation cost is **expected** $O(log(n))$
@@ -37,12 +43,18 @@ if the priority is generated randomly from a continuous ranges, the expected tre
 
 ### Depth analyze
 denote $u_k$ as the priority of a node that kth smaller search key. We have 
-$$u_1\lt u_2 \lt ... \lt u_k \lt ... \lt u_n$$
+$$
+u_1\lt u_2 \lt ... \lt u_k \lt ... \lt u_n
+$$
 
 denote $[i\uparrow k]$ as if $u_i$ is a proper ancestor of $u_k$, (=1 if yes, =0 otherwise)
-$$depth(u_k) = \sum^{n}_{i=1}[i\uparrow k]$$
+$$
+depth(u_k) = \sum^{n}_{i=1}[i\uparrow k]
+$$
 because of $[i\uparrow k] = 0$, if $i$ is not proper ancestor of $k$
-$$E[depth(u_k)]=\sum^{n}_{i=1}E[i\uparrow k] = \sum^{n}_{i=1}Pr[i\uparrow k]$$ 
+$$
+E[depth(u_k)]=\sum^{n}_{i=1}E[i\uparrow k] = \sum^{n}_{i=1}Pr[i\uparrow k]
+$$ 
 
 denote $U(i,k)$ is set of node that $u_i,u_{i+1},...,u_k$ or $u_k,...,u_{i-1},u_i$ depend on the relationship of $i$ and $k$. we can get lemma 1
 * lemma 1: For $i\neq k$, $[i\uparrow k] = 1$, if and only if $u_i$ has the smallest priority in $U(i,k)$
@@ -57,13 +69,19 @@ $$
 
 using harmonic serious bound
 
-$$ E[depth(u_k)]=\sum^{k-1}_{j=2} \frac{1}{k-i+1} + \sum^{n}_{j=2} \frac{1}{i-k+1} \leq ln(k) + ln(n-k+1) \leq 2ln2 $$
+$$
+ E[depth(u_k)]=\sum^{k-1}_{j=2} \frac{1}{k-i+1} + \sum^{n}_{j=2} \frac{1}{i-k+1} \leq ln(k) + ln(n-k+1) \leq 2ln2 
+$$
 
 # Amortized Analysis
 ## definition
-$$\sum^m_{i=1} cost(\sigma_i) \leq \sum^m_{i=1} a(\sigma_i)$$
+$$
+\sum^m_{i=1} cost(\sigma_i) \leq \sum^m_{i=1} a(\sigma_i)
+$$
 but note that it is unnecessary to have, it is also the difference between worse bound and amortized bound
-$$ \forall i \in [1,m] \ cost(\sigma_i) \leq a(\sigma_i)$$
+$$
+ \forall i \in [1,m] \ cost(\sigma_i) \leq a(\sigma_i)
+$$
 
 ## why amortized
 when other people invoke some data structure's interface (many times), they will not care about the time consuming individual operation call, but the overall running time.
@@ -76,9 +94,15 @@ We need to show that the balance in account is positive (always?//todo) to suppo
 
 ### potential functions
 Use $\Phi(S_i)$ to denote state of ith operation. ensure that
-$$\Phi(S_i) \ge 0, \Phi(S_0) =0 $$
-$$a(\sigma_i) = cost(\sigma_i)+\Phi(S_i)-\Phi(S_i-1)$$
-$$\sum^n_{i=1} a(\sigma_i) = \sum^n_{i=1} cost(\sigma_i)+\Phi(S_i)-\Phi(S_0) \ge \sum^n_{i=1} cost(\sigma_i)$$
+$$
+\Phi(S_i) \ge 0, \Phi(S_0) =0 
+$$
+$$
+a(\sigma_i) = cost(\sigma_i)+\Phi(S_i)-\Phi(S_i-1)
+$$
+$$
+\sum^n_{i=1} a(\sigma_i) = \sum^n_{i=1} cost(\sigma_i)+\Phi(S_i)-\Phi(S_0) \ge \sum^n_{i=1} cost(\sigma_i)
+$$
 
 $\Delta \Phi(S)$ can be treated as prepaid (positive) and withdraw (negative) in prepaid argument.
 
@@ -113,8 +137,12 @@ Use physical inplementation inspired by prepaid argument to reduce expensive ope
     * lemma 2: height is bounded by $O(log(n))$ <= $\alpha ^ {h_{max}}n\geq n_{height} \geq 1$
 
 ## potential function
-$$\phi(S_i) = N + 3T+\frac{3}{2\alpha-1}B$$
-$$\Delta \phi(S_i) = \Delta N + 3\Delta T+\frac{3}{2\alpha-1}\Delta B$$
+$$
+\phi(S_i) = N + 3T+\frac{3}{2\alpha-1}B
+$$
+$$
+\Delta \phi(S_i) = \Delta N + 3\Delta T+\frac{3}{2\alpha-1}\Delta B
+$$
 ## operation
 ### Insertion
 form a new tournamet tree (with one elements) and add it to the forest
@@ -176,7 +204,9 @@ denotes: $\mathcal{L}$ as
     * rank $r(x) = log_2s(x)$
     * sub-tree weight sum $s(x) = \underset{u\in T(x)}{\sum}w(u)$
     * $w(x) = 1$ in splay amortized analyze
-* access lemma: the amortized cost of the splay(x) is bounded by $$3(r^{(1)}(x)-r^{(0)}(x)))+1$$ where $(0)$ denotes states before operation and $(1)$ denotes states after opration, (the +1 is for zig-zag or zag-zig case) and this lemma holds for all constant positive $w(x), x\in T$
+* access lemma: the amortized cost of the splay(x) is bounded by $$
+3(r^{(1)}(x)-r^{(0)}(x))+1
+$$ where $(0)$ denotes states before operation and $(1)$ denotes states after opration, (the +1 is for zig-zag or zag-zig case) and this lemma holds for all constant positive $w(x), x\in T$
 
     * for one double rotation (i-th index ignored)
         * zig-zig (or zag-zag) case

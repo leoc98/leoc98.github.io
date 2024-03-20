@@ -62,15 +62,23 @@ def: stop word, a list of word that will be remove from vocabulary
 ## Seen probability
 $P(sentence) = \prod_{i<len(sentence)} P(w_i)$
 ## Perplexity
-$$PP(sentence) = (\frac{1}{P(sentence)})^{ \frac{1}{m}}$$
-$$log(PP) = -\frac{1}{m}log(P)$$
+$$
+PP(sentence) = (\frac{1}{P(sentence)})^{ \frac{1}{m}}
+$$
+$$
+log(PP) = -\frac{1}{m}log(P)
+$$
 ## n-grams
 ### Markov Assumption
-$$P(w_i|w_1w_2...w_{i-1}) \approx P(w_{i-n+1}...w_{i-1}) $$
+$$
+P(w_i|w_1w_2...w_{i-1}) \approx P(w_{i-n+1}...w_{i-1}) 
+$$
 
 ### Maximun Likelihood Estimation
 unigram
-$$P(w_i) = \frac{C(w_i)}{M}$$
+$$
+P(w_i) = \frac{C(w_i)}{M}
+$$
 n-gram($n>1$)
 $$P(w_{i-n+1}...w_{i-1}) = \frac{
 C(w_{i-n+1}...w_{i})
@@ -101,7 +109,9 @@ word\_token + word\_type \times \alpha
     1. get a fix count from existed words
     2. distribute fix count by the portion of all existed conbination prefix count (**unique count**, where $count(w^{'}_{i-1}:C(w^{'}_{i-1}, w_i)>0)$) divided all unseen combindation of their seen count (**also unique count**, where $\sum_{\underbrace{w_j:C(w_{i-1},w_{j})=0}_{all\ unseen\ combindation\ of\ w_{i-1}}} count(\underbrace{w_j:C(w_{j-1},w_{j}) > 0}_{seen\ conbination\ count\ of\ w_j})$)
 ### Interpolation
-$$P_{IN}(w_i|w_{i-1},w_{i-2}) = \lambda_3 P_3 + \lambda_2 P_2 + \lambda_1 P_1$$
+$$
+P_{IN}(w_i|w_{i-1},w_{i-2}) = \lambda_3 P_3 + \lambda_2 P_2 + \lambda_1 P_1
+$$
 where $\sum \lambda_i = 1$, 
 $P_i$ denotes i-grams probability,
 $lambda$ is learned base on held out data

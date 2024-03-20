@@ -17,7 +17,9 @@
 
 ### Optimal clocks setting
 n denotes #clocks 
-$$clocks = t + (Trans_{max} + Trans_{min})(1-\frac{1}{n})$$
+$$
+clocks = t + (Trans_{max} + Trans_{min})(1-\frac{1}{n})
+$$
 
 ### Synchronized methods
 #### Cristian's
@@ -79,7 +81,9 @@ Distributed
 assemble a meaningful global state from local stes recorded at different times
 
 ### consistnet cut
-$$\forall e, e',e\in C, e'\rightarrow e \Rightarrow e' \in C$$
+$$
+\forall e, e',e\in C, e'\rightarrow e \Rightarrow e' \in C
+$$
 
 ### run
 total ordering of all events in a global history that is consistent with each process' local history ordering.
@@ -88,7 +92,9 @@ ordering of evnets in a global history that is consitent with the happened-befor
 
 ### reachable state
 $S'$ is reachable from $S$, $l$ is a linearization of states
-$$\exist l, S\overset{l}{\rightarrow}S'$$
+$$
+\exist l, S\overset{l}{\rightarrow}S'
+$$
 
 ## Snapshot
 to recover from termination

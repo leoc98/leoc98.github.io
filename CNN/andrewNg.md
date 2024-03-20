@@ -49,9 +49,13 @@ no parameter to learn
 
 # Residual Network
 * use normal neural network as main path
-    $$z^{[l+1]} = w^{[l+1]}a^{[l]} + b^{[l+1]},a^{[l+1]} = g(z^{[l+1]})$$
+    $$
+z^{[l+1]} = w^{[l+1]}a^{[l]} + b^{[l+1]},a^{[l+1]} = g(z^{[l+1]})
+$$
 * use previous layer as short cut (or say skip connection)
-$$a^{[l+2]} = g(z^{[l+2]} + a^{[l]}) $$
+$$
+a^{[l+2]} = g(z^{[l+2]} + a^{[l]}) 
+$$
 
 ## Why RN can gets deeper without hurt the performance on training set
 since shortcut provides a obvious way to make the output identical to previous layer (where weight and bias all equals to 0 when you apply L2 regularation), it will at least as good as previous layer.
@@ -60,7 +64,9 @@ since shortcut provides a obvious way to make the output identical to previous l
 to reduce computation cost on mobile device
 ## Depthwise Convolution
 makes each channel maps to one filter, rather than maps to all filters
-$$previous\ channel\ size = filter\ size = new\ channel\ size $$
+$$
+previous\ channel\ size = filter\ size = new\ channel\ size 
+$$
 ## Pointwise Convolution
 use 1*1 Depthwise convolution, but use filter sizes to control new channel size
 
@@ -105,12 +111,14 @@ makes the output in larger dimension
 # face identical
 ## face verification
 use similarity function to find a match
-$$distance(img1, img2) \leq \tau$$
+$$
+distance(img1, img2) \leq \tau
+$$
 ### siamese network
 img -> 128 dimension output
 
 ### Object function
-use $$\alpha$$ as a margin, $a$ as the anchor image, $p$ as a positive image and $n$ as a negative image.
+use $\alpha$ as a margin, $a$ as the anchor image, $p$ as a positive image and $n$ as a negative image.
 $$
  d(a,p) + \alpha \leq d(a,n)
 $$
