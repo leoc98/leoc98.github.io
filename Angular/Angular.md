@@ -33,7 +33,8 @@ Angular有多种修饰器，修饰器需要从@angular/core中引入使用
 
 # 元素绑定
 * HTML绑定
-{{}}
+`\{\{\}\}`
+
     * 不可绑定new对象和JSON.stringify()
 
 * 属性绑定
